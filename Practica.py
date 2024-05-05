@@ -53,35 +53,78 @@ import json
 # data = {"name": "John", "age":30, "city": "new york", "address":{"street":"123 Main", "zip": "10001"}}
 # json_string = json.dumps(data, indent=2, sort_keys=True)
 # print(json_sting)
+#
+# import json
+# class Person:
+#     filename =
+#     def __init__(self, name, age):
+#         self.name = name
+#         self.age = age
+#
+#     def birthday(self):
+#         self.age += 1
+#     def print_info(self):
+#         print(self.name, self.age)
+#     @classmethod
+#     def load_person(cls,):
+#         with open(cls.filename, "r") as file:
+#             dct = json.load(file)
+#
+#         return cls(name=dct["name"],
+#                    age=dct["age"])
+#
+# person = Person("Max", 16)
+# # person.birthday()
+# # person.birthday()
+# # person.birthday()
+# # person.save()
+# # person.load()
+# # person.print_info()
+#
+#
+#
+# read_person = Person.load_person()
+# read_person.print_info()
 
 import json
-class Person:
-    filename =
-    def __init__(self, name, age):
-        self.name = name
-        self.age = age
+import time
 
-    def birthday(self):
-        self.age += 1
-    def print_info(self):
-        print(self.name, self.age)
-    @classmethod
-    def load_person(cls,):
-        with open(cls.filename, "r") as file:
-            dct = json.load(file)
+def save_timer_state(timer_state, filename):
+    with open(filename, 'w') as f:
+        json.dump(timer_state, f)
 
-        return cls(name=dct["name"],
-                   age=dct["age"])
+def load_timer_state(filename):
+    try:
+        with open(filename, 'r') as f:
+            return json.load(f)
+    except FileNotFoundError:
+        return None
 
-person = Person("Max", 16)
-# person.birthday()
-# person.birthday()
-# person.birthday()
-# person.save()
-# person.load()
-# person.print_info()
+def start_timer():
+    try:
 
+        timer_state = load_timer_state("timer_state.json")
+        if timer_state:
+            elapsed_time = timer_state.get("elapsed_time", 0)
+            start_time = time.time() - elapsed_time
+            print("Таймер відновлено.")
+        else:
+            start_time = time.time()
+            print("Таймер почато.")
 
 
-read_person = Person.load_person()
-read_person.print_info()
+        while True:
+            current_time = time.time()
+            elapsed_time = current_time - start_time
+            print("Час: {:.2f} с".format(elapsed_time), end='\r')
+
+
+            timer_state = {"elapsed_time": elapsed_time}
+            save_timer_state(timer_state, "timer_state.json")
+
+            time.sleep(1)
+    except KeyboardInterrupt:
+        print("\nТаймер зупинено.")
+
+if __name__ == "__main__":
+    start_timer()
