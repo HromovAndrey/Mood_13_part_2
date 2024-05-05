@@ -8,9 +8,11 @@
 import json
 import time
 
+
 def save_timer_state(timer_state, filename):
     with open(filename, 'w') as f:
         json.dump(timer_state, f)
+
 
 def load_timer_state(filename):
     try:
@@ -18,6 +20,7 @@ def load_timer_state(filename):
             return json.load(f)
     except FileNotFoundError:
         return None
+
 
 def start_timer():
     try:
@@ -43,13 +46,8 @@ def start_timer():
     except KeyboardInterrupt:
         print("\nТаймер зупинено.")
 
+
 if __name__ == "__main__":
     start_timer()
 
 
-# Завдання 2
-# Реалізація програми для додавання, видалення та
-# відстеження завдань/заміток. Зберігати ці завдання у
-# форматі JSON у файлі. Можливість завантаження
-# раніше збережених завдань для подальшої роботи з
-# ними.
