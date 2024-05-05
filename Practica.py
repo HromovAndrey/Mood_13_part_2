@@ -81,7 +81,7 @@ person = Person("Max", 16)
 # person.load()
 # person.print_info()
 
-person.save()
+
 
 read_person = Person.load_person()
 read_person.print_info()
